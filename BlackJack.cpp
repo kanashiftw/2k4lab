@@ -134,6 +134,7 @@ void Diller::fillCards(Deck a) {
         score += tmp.calculateCard();
         if (score < 12) tmp.displayCard();
         else cout << " XX";
+        a.number--;
     }
 }
 
@@ -152,10 +153,12 @@ public:
         cin >> i.bet;
         cout << "Ваша ставка: " << i.bet <<"$" << endl;
         cout << "Карты диллера:" << endl;
-        he.fillCards(_deck);
-        _deck.number -= he.v.size();
         srand(time(0));
         _deck.generateDeck();
+        he.fillCards(_deck);
+        _deck.number -= he.v.size();
+        cout << endl;
+        cout << "---------------------------" << endl;
         i.takeCard(_deck);
         _deck.number--;
         _deck.printDeck();
@@ -178,7 +181,7 @@ public:
             cout << ' ';
         }
         if (i.score > 21) "Перебор!";
-        else if (i.score == 21) cout << "Очко! ";
+        else if (i.score == 21) cout << "Победа! Очко! ";
         else if (i.score > he.score) cout << "Победа!\nВаш счет: "<<i.score
             <<" больше счета диллера: "<<he.score;
         else if (i.score < he.score) cout << "Поражение!\nВаш счет: " << i.score 
@@ -195,4 +198,3 @@ int main()
     SetConsoleOutputCP(1251);
     Game a;
 }
-
