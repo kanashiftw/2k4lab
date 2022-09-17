@@ -1,4 +1,4 @@
-﻿#include <iostream>
+#include <iostream>
 #include <Windows.h>
 #include <vector>
 enum CardSuit { CLUBS, DIAMONDS, HEARTS, SPADES };
@@ -12,10 +12,9 @@ using namespace std;
 //////////////////////////////////////////////////////////////////
 
 class Card {
-protected:
+public:
     CardSuit suit;
     CardRank rank;
-public:
     Card() {}
     Card(CardSuit _suit, CardRank _rank) {
         suit = _suit;
@@ -93,7 +92,8 @@ Card Deck::getCard() {
 //Генерация случайной колоды
 void Deck::generateDeck() {
     for (int i = 0; i < 36; i++) {
-        cards[i].setCard();
+        cards[i].suit = static_cast<CardSuit>(i % 4);
+        cards[i].rank = static_cast<CardRank>(i % 9);
     }
     cout << "\n";
 }
@@ -105,6 +105,7 @@ void Deck::generateDeck() {
 
 class Player {
 public:
+    int bet = 0;
     int score = 0;
     vector<Card> v;
     Player(){}
@@ -118,20 +119,45 @@ void Player::takeCard(Deck a) {
     tmp.displayCard();
     cout << "\nСчет: "<<score<<endl;
 }
+/////////////////////////////////////////////////////////////////////
+//      КЛАСС ДИЛЛЕР                                              //
+////////////////////////////////////////////////////////////////////
+class Diller : public Player{
+public:
+    Diller() {}
+    void fillCards(Deck a);
+};
+void Diller::fillCards(Deck a) {
+    while (score < 17) {
+        Card tmp = a.getCard();
+        v.push_back(tmp);
+        score += tmp.calculateCard();
+        if (score < 12) tmp.displayCard();
+        else cout << " XX";
+    }
+}
 
 ////////////////////////////////////////////////////////////////////
-//     КЛАСС ИГРА, СОДЕРЖАЩИЙ ИГРОКА, КОЛОДУ И РЕШЕНИЕ ИГРОКА     //
+//     КЛАСС ИГРА, СОДЕРЖАЩИЙ ИГРОКА, КОЛОДУ И РЕШЕНИЕ ИГРОКА    //
 ///////////////////////////////////////////////////////////////////
 
 class Game {
 public:
     Player i;
+    Diller he;
     Deck _deck;
     int action;
     Game() {
+        cout << "Сделайте ставку: ";
+        cin >> i.bet;
+        cout << "Ваша ставка: " << i.bet <<"$" << endl;
+        cout << "Карты диллера:" << endl;
+        he.fillCards(_deck);
+        _deck.number -= he.v.size();
         srand(time(0));
         _deck.generateDeck();
         i.takeCard(_deck);
+        _deck.number--;
         _deck.printDeck();
 
         cout << "Вытянуть еще карту?\n1 - да \n2 - нет\n";
@@ -146,10 +172,19 @@ public:
             cin >> action;
             cout << endl;
         }
-
+        cout << "Карты диллера: " << endl;
+        for (int i = 0; i < he.v.size();i++) {
+            he.v[i].displayCard();
+            cout << ' ';
+        }
         if (i.score > 21) "Перебор!";
         else if (i.score == 21) cout << "Очко! ";
-        else cout << i.score;
+        else if (i.score > he.score) cout << "Победа!\nВаш счет: "<<i.score
+            <<" больше счета диллера: "<<he.score;
+        else if (i.score < he.score) cout << "Поражение!\nВаш счет: " << i.score 
+            << " меньше счета диллера: " << he.score;
+        else cout << "Ровно!\nВаш счет : " << i.score 
+            << " равен счету диллера : " << he.score;
     }
 };
 /////////////////////////////////////////////////////////////
@@ -158,7 +193,6 @@ int main()
 {
     SetConsoleCP(1251);
     SetConsoleOutputCP(1251);
-   
     Game a;
 }
 
