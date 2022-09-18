@@ -98,6 +98,7 @@ void Deck::generateDeck() {
         cards[i].suit = static_cast<CardSuit>(i % 4);
         cards[i].rank = static_cast<CardRank>(i % 9);
     } 
+    random_shuffle(begin(cards), end(cards));
     cout << "\n";
 }
 
@@ -157,7 +158,7 @@ public:
     Diller he;
     vector <Deck>deck_vec;
     
-    int action;
+    int action = 1;
     int decknum;
     Game() {
         i.makeBet();
@@ -174,45 +175,53 @@ public:
         deck_vec[0].number -= he.v.size();
         cout << endl;
         cout << "--------------------------------------------" << endl;
-        do {
-            cout << "Выберите колоду: " << "1/2/3/4\n";
-            cin >> decknum;
-            switch (decknum) {
-            case 1:i.takeCard(deck_vec[0]);
-                deck_vec[0].number--;
-                break;
-            case 2:i.takeCard(deck_vec[1]);
-                deck_vec[1].number--;
-                break;
-            case 3:i.takeCard(deck_vec[2]);
-                deck_vec[2].number--;
-                break;
-            case 4:i.takeCard(deck_vec[3]);
-                deck_vec[3].number--;
+        while (action == 1) {
+            try {
+                cout << "Выберите колоду: " << "1/2/3/4\n";
+                cin >> decknum;
+                switch (decknum) {
+                case 1:i.takeCard(deck_vec[0]);
+                    deck_vec[0].number--;
+                    break;
+                case 2:i.takeCard(deck_vec[1]);
+                    deck_vec[1].number--;
+                    break;
+                case 3:i.takeCard(deck_vec[2]);
+                    deck_vec[2].number--;
+                    break;
+                case 4:i.takeCard(deck_vec[3]);
+                    deck_vec[3].number--;
+                    break;
+                }
+                for (int i = 0; i < 4; i++) {
+                    deck_vec[i].printDeck();
+                }
+                cout << "\nВытянуть еще карту?\n1 - да \n2 - нет\n";
+                cin >> action;
+                cout << endl;
+                if (i.score > 21) throw invalid_argument("Перебор!");
+            }
+            catch (invalid_argument& e) {
+                cerr << e.what() << endl;
                 break;
             }
-            for (int i = 0; i < 4; i++) {
-                deck_vec[i].printDeck();
-            }
-            cout << "\nВытянуть еще карту?\n1 - да \n2 - нет\n";
-            cin >> action;
-            cout << endl;
-        } while (action == 1);
- 
-        cout << "Карты диллера: " << endl;
-        for (int i = 0; i < he.v.size();i++) {
-            he.v[i].displayCard();
-            cout << ' ';
         }
-        cout << endl;
-        if (i.score > 21) "Перебор!";
-        else if (i.score == 21) cout << "Победа! Очко! ";
-        else if (i.score > he.score) cout << "Победа!\nВаш счет: "<<i.score
-            <<" больше счета диллера: "<<he.score;
-        else if (i.score < he.score) cout << "Поражение!\nВаш счет: " << i.score 
-            << " меньше счета диллера: " << he.score;
-        else cout << "Ровно!\nВаш счет : " << i.score 
-            << " равен счету диллера : " << he.score;
+        if (i.score <= 21) {
+            cout << "Карты диллера: " << endl;
+            for (int i = 0; i < he.v.size();i++) {
+                he.v[i].displayCard();
+                cout << ' ';
+            }
+            cout << endl;
+            if (i.score == 21) cout << "Победа! Очко! ";
+            else if (i.score > he.score) cout << "Победа!\nВаш счет: " << i.score
+                << " больше счета диллера: " << he.score;
+            else if (i.score < he.score && he.score <= 21) cout << "Поражение!\nВаш счет: " << i.score
+                << " меньше счета диллера: " << he.score;
+            else if (i.score < he.score) cout << "Победа по очкам, перебор у диллера: " << he.score;
+            else cout << "Ровно!\nВаш счет : " << i.score
+                << " равен счету диллера : " << he.score;
+        }
     }
 };
 /////////////////////////////////////////////////////////////
