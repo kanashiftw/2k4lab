@@ -1,0 +1,7 @@
+﻿  BlackJack.cpp
+  Game.cpp
+C:\Users\PC\source\repos\BlackJack\BlackJack\Game.cpp(4,15): warning C4244: аргумент: преобразование "time_t" в "unsigned int", возможна потеря данных
+C:\Users\PC\source\repos\BlackJack\BlackJack\Game.cpp(11,15): warning C4244: аргумент: преобразование "time_t" в "unsigned int", возможна потеря данных
+C:\Users\PC\source\repos\BlackJack\BlackJack\Game.cpp(14,36): warning C4267: -=: преобразование из "size_t" в "int"; возможна потеря данных
+  Создание кода...
+  BlackJack.vcxproj -> C:\Users\PC\source\repos\BlackJack\x64\Debug\BlackJack.exe
