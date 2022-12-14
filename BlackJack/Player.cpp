@@ -4,7 +4,7 @@ void Player::takeCard(Deck a) {
     Card tmp = a.getCard();
     v.push_back(tmp);
     score += tmp.calculateCard();
-    tmp.displayCard();
+    tmp.Prettyprint();
     cout << "\nÑ÷åò: " << score << endl;
 }
 void Player::makeBet() {

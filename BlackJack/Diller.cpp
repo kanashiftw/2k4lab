@@ -4,7 +4,9 @@ void Diller::fillCards(Deck a) {
         Card tmp = a.getCard();
         v.push_back(tmp);
         score += tmp.calculateCard();
-        if (score < 12) tmp.displayCard();
+        if (score < 12) {
+            tmp.Prettyprint();
+        }
         else cout << " XX";
         a.number--;
     }

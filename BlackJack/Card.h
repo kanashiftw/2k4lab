@@ -1,4 +1,5 @@
 #pragma once
+#include "IFormattable.h"
 //////////////////////////////////////////////////////////////////
 //       À¿——  ¿–“€ —Œƒ≈–∆¿Ÿ»… Ã¿—“‹  ¿–“€, «Õ¿◊≈Õ»≈  ¿–“€,     //
 //     2  ŒÕ—“–” “Œ–¿ » ¬»–“”¿À‹Õ€≈ Ã≈“Œƒ€ Œ“Œ¡–¿∆≈Õ»ﬂ  ¿–“€,   //
@@ -6,7 +7,7 @@
 //////////////////////////////////////////////////////////////////
 enum CardSuit { CLUBS, DIAMONDS, HEARTS, SPADES };
 enum CardRank { TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, TEN, JACK, QUEEN, KING, ACE };
-class Card {
+class Card: public IFormattable {
 public:
     CardSuit suit;
     CardRank rank;
@@ -18,4 +19,6 @@ public:
     void displayCard();
     void setCard();
     int calculateCard();
+    string Format();
+    virtual void Prettyprint()override;
 };
